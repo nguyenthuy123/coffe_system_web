@@ -16,9 +16,9 @@
       </header>
       <section class="modal-card-body">
         <p>
-          This will permanently delete <b>{{ trashObjectName }}</b>
+          Bạn đang thực hiện xóa <b>{{ trashObjectName }}</b>
         </p>
-        <p>Action can not be undone.</p>
+        <p>Hành động này không thể hoàn tác.</p>
       </section>
       <footer class="modal-card-foot">
         <b-button
@@ -27,13 +27,13 @@
           outlined
           @click="cancel"
         >
-          Cancel
+          Hủy
         </b-button>
         <b-button
           type="is-danger"
           @click="confirm"
         >
-          Delete
+          Xóa
         </b-button>
       </footer>
     </div>

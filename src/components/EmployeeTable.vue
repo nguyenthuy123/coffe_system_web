@@ -363,6 +363,7 @@
         this.instance.get("admin/employee/" + storeId + "/detail/" + id)
           .then((response) => {
             this.employee = response.data.data;
+            this.employee.dob = new Date(response.data.data.dob);
           })
           .catch((e) => {
             this.error.push(e);

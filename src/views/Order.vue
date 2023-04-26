@@ -8,7 +8,7 @@
       <div class="col col-sm-4">
         <div class="card shadow mb-4">
           <div class="card-header py-3">Danh sách bàn
-            <b-button style="margin-left: 45%" type="is-success" @click="prompt">Thêm bàn</b-button></div>
+            <b-button style="margin-left: 45%" type="is-success" @click="myModel = true">Thêm bàn</b-button></div>
           <div class="card-body">
             <div class="table-area" v-for="(numberTable, index) in listOrder">
               <b-button style="width: 130px; border: double; height: 70px"
@@ -43,6 +43,48 @@
         </div>
       </div>
     </div>
+
+    <transition v-if="myModel" name="modal">
+      <div class="modal-mask-category">
+        <card-component
+          class="modal-category"
+          icon="ballot"
+          title="Thông tin"
+        >
+          <form @submit.prevent="formAction">
+            <b-field
+              horizontal
+              label="Tên"
+            >
+              <b-field>
+                <b-input
+                  v-model="table.name"
+                  icon="table"
+                  name="name"
+                  placeholder="Tên bàn"
+                  required
+                />
+              </b-field>
+
+            </b-field>
+          </form>
+          <b-notification
+            v-model="isActive"
+            aria-close-label="Close notification"
+            auto-close
+            type="is-danger">
+            Vui lòng điền đẩy đủ thông tin
+          </b-notification>
+          <div class="group-btn-category">
+            <b-button style="margin-right: 10px;" @click="myModel = false">Hủy</b-button>
+            <b-button type="is-info" @click="submit">Lưu</b-button>
+          </div>
+
+        </card-component>
+
+
+      </div>
+    </transition>
 
   </div>
 
@@ -82,11 +124,13 @@
         instance: '',
         error: [],
         stores: [],
+        isActive: false,
+        myModel: false,
         storeId: '',
         listTable: [],
         listOrder: [],
         detailData: [],
-        form: {
+        table: {
           id: '',
           name: ''
         }
@@ -129,7 +173,7 @@
       },
 
       loadTable(storeId) {
-        this.instance.get("/admin/" + storeId + "/table/list")
+        this.instance.get("/" + storeId + "/table/list")
           .then((response) => {
             this.listOrder = response.data.data;
           });
@@ -148,23 +192,41 @@
         })
       },
 
-      saveTable(storeId, name) {
-        storeId = this.storeId;
-        this.instance.post("/admin/" + storeId + "/table/save", {id: this.form.id, name: name})
-          .then((response) => {
-            if (response.data.status.code === 1000) {
-              this.$buefy.toast.open({
-                message: 'Lưu thành công',
-                type: 'is-success'
-              })
-              this.loadTable(storeId);
-            }
-          });
+      submit(storeId, name) {
+        if (this.checkForm() === true) {
+          this.pause();
+        } else {
+          storeId = this.storeId;
+          this.instance.post("/" + storeId + "/table/save", {id: this.table.id, name: name})
+            .then((response) => {
+              if (response.data.status.code === 1000) {
+                this.$buefy.toast.open({
+                  message: 'Lưu thành công',
+                  type: 'is-success'
+                })
+                this.loadTable(storeId);
+              }
+            });
+        }
+      },
+
+      pause() {
+        this.$buefy.notification.open({
+          message: `Vui lòng điền đầy đủ thông tin`,
+          type: "is-danger",
+          pauseOnHover: true,
+        });
+      },
+
+      checkForm() {
+        if (this.table.name === "") {
+          return true;
+        }
       },
 
       detail(storeId, tableId) {
         storeId = this.storeId;
-        this.instance.get("/admin/" + storeId + "/order/detail/" +tableId)
+        this.instance.get("/" + storeId + "/order/detail/" +tableId)
           .then((response) => {
             this.detailData = response.data.data.listItemResponse
           });

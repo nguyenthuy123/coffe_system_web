@@ -243,7 +243,6 @@
       },
 
       submit() {
-        console.log(this.employee)
         if (this.checkForm() === true) {
           this.pause();
         } else {

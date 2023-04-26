@@ -137,8 +137,6 @@
         this.myModel = true
       },
 
-
-
       submit() {
         if (this.checkForm() === true) {
           this.pause();

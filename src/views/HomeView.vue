@@ -27,7 +27,7 @@
           type="is-primary"
           icon="account-multiple"
           :number="54"
-          label="Khách hàng"
+          label="Khách hàng mới trong ngày"
         />
         <card-widget
           class="tile is-child"

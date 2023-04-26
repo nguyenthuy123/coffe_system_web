@@ -47,7 +47,7 @@
         </nav-bar-menu>
         <nav-bar-menu class="has-divider has-user-avatar">
           <user-avatar/>
-          <div class="is-user-name">
+          <div class="is-user-name" v-model="name">
             <span>{{ name }}</span>
           </div>
 

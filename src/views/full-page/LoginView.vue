@@ -92,22 +92,5 @@
     }, 750);
   };
 
-  // const loadStore =  () => {
-  //   console.log('token', localStorage.getItem("token"));
-  //   axios.get("http://localhost:8080/store/list", {
-  //     header: {
-  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //     }
-  //   })
-  //     .then((response) => {
-  //       console.log('store', response);
-  //       this.stores = response.data.data;
-  //       localStorage.setItem("stores", JSON.stringify(this.store));
-  //     });
-  // }
-  //
-  // onMounted(() => {
-  //   loadStore();
-  // })
 </script>
 
