@@ -34,7 +34,7 @@
           type="is-info"
           icon="cart-outline"
           :number="1200000"
-          prefix="VND"
+          suffix="VND"
           label="Đã bán"
         />
         <card-widget
@@ -48,9 +48,9 @@
         <card-widget
           class="tile is-child"
           type="is-info"
-          icon="cart-outline"
+          icon="currency-usd"
           :number="1440000"
-          prefix="VND"
+          suffix="VND"
           label="Tổng"
         />
       </tiles-block>

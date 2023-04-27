@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     meta: {
-      title: "Dashboard"
+      title: "Trang chủ"
     },
     path: "/home",
     name: "home",
@@ -40,7 +40,7 @@ const routes = [
   },
   {
     meta: {
-      title: "Forms"
+      title: "Tài khoản nhân viên"
     },
     path: "/forms",
     name: "forms",

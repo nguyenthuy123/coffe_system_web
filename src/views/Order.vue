@@ -8,7 +8,7 @@
       <div class="col col-sm-4">
         <div class="card shadow mb-4">
           <div class="card-header py-3">Danh sách bàn
-            <b-button style="margin-left: 45%" type="is-success" @click="myModel = true">Thêm bàn</b-button></div>
+            <b-button style="margin-left: 45%" type="is-success" @click="addTable">Thêm bàn</b-button></div>
           <div class="card-body">
             <div class="table-area" v-for="(numberTable, index) in listOrder">
               <b-button style="width: 130px; border: double; height: 70px"
@@ -45,9 +45,9 @@
     </div>
 
     <transition v-if="myModel" name="modal">
-      <div class="modal-mask-category">
+      <div class="modal-mask-table">
         <card-component
-          class="modal-category"
+          class="modal-table"
           icon="ballot"
           title="Thông tin"
         >
@@ -75,7 +75,7 @@
             type="is-danger">
             Vui lòng điền đẩy đủ thông tin
           </b-notification>
-          <div class="group-btn-category">
+          <div class="group-btn-table">
             <b-button style="margin-right: 10px;" @click="myModel = false">Hủy</b-button>
             <b-button type="is-info" @click="submit">Lưu</b-button>
           </div>
@@ -179,27 +179,19 @@
           });
       },
 
-      prompt() {
-        let storeId = this.storeId;
-        this.$buefy.dialog.prompt({
-          message: `Tên bàn`,
-          inputAttrs: {
-            placeholder: 'Bàn x',
-            maxlength: 10
-          },
-          trapFocus: true,
-          onConfirm: (value) => this.saveTable(storeId, value)
-        })
+      addTable() {
+        this.myModel = true;
       },
 
-      submit(storeId, name) {
+      submit(storeId) {
         if (this.checkForm() === true) {
           this.pause();
         } else {
           storeId = this.storeId;
-          this.instance.post("/" + storeId + "/table/save", {id: this.table.id, name: name})
+          this.instance.post("/" + storeId + "/table/save", this.table)
             .then((response) => {
               if (response.data.status.code === 1000) {
+                this.myModel = false;
                 this.$buefy.toast.open({
                   message: 'Lưu thành công',
                   type: 'is-success'
@@ -239,6 +231,30 @@
 </script>
 
 <style scoped>
+
+  .modal-mask-table {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #444242da;
+  }
+
+  .modal-table {
+    margin-top: 100px;
+    width: 1000px;
+    height: 300px;
+    padding: 25px;
+  }
+
+  .group-btn-table {
+    margin-top: 100px;
+    position: absolute;
+    right: 30px;
+  }
 
   .row {
     display: flex;

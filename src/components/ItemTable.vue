@@ -53,7 +53,7 @@
         <small
           class="has-text-grey is-abbr-like"
           :title="props.row.createTime"
-        >{{ props.row.createTime}}</small>
+        >{{ props.row.createTime.split("T")[0] + " " + props.row.createTime.split("T")[1].split(".")[0] }}</small>
       </b-table-column>
       <b-table-column
         v-slot="props"

@@ -28,7 +28,7 @@
         field="createTime"
         sortable
       >
-        {{ props.row.createTime}}
+        {{ props.row.createTime.split("T")[0] + " " + props.row.createTime.split("T")[1].split(".")[0] }}
       </b-table-column>
       <b-table-column
         v-slot="props"

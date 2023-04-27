@@ -3,12 +3,12 @@ export default [
   [
     {
       to: "/home",
-      icon: "desktop-mac",
+      icon: "home",
       label: "Trang chủ"
     },
     {
       to: "/order",
-      icon: "desktop-mac",
+      icon: "table",
       label: "Khu vực bàn"
     }
   ],
@@ -17,7 +17,7 @@ export default [
     {
       to: "/attendance",
       label: "Bảng công",
-      icon: "table",
+      icon: "file-check-outline",
       updateMark: true
     },
     {
@@ -28,7 +28,7 @@ export default [
     {
       label: "Đồ uống",
       subLabel: "Submenus Example",
-      icon: "view-list",
+      icon: "glass-cocktail",
       menu: [
         {
           to: "/category",
@@ -51,7 +51,7 @@ export default [
     {
       to: "/client",
       label: "Khách hàng",
-      icon: "account",
+      icon: "account-multiple",
     }
   ]
 ];
