@@ -109,7 +109,7 @@
       };
     },
     mounted() {
-      const baseDomain = "https://coffesystem-production.up.railway.app";
+      const baseDomain = "http://localhost:8080";
 
       const baseURL = `${baseDomain}`;
       this.instance = axios.create({

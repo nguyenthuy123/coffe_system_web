@@ -26,52 +26,34 @@
           class="tile is-child"
           type="is-primary"
           icon="account-multiple"
-          :number="54"
+          :number="newCustomer"
           label="Khách hàng mới trong ngày"
         />
         <card-widget
           class="tile is-child"
           type="is-info"
           icon="cart-outline"
-          :number="1200000"
-          suffix="VND"
-          label="Đã bán"
-        />
-        <card-widget
-          class="tile is-child"
-          type="is-success"
-          icon="chart-timeline-variant"
-          :number="25"
-          suffix="%"
-          label="Năng suất"
+          :number="quantityOrder"
+          suffix=""
+          label="Số order trong ngày"
         />
         <card-widget
           class="tile is-child"
           type="is-info"
           icon="currency-usd"
-          :number="1440000"
+          :number="revenue"
           suffix="VND"
           label="Tổng"
         />
+        <card-widget
+          class="tile is-child"
+          type="is-success"
+          icon="chart-timeline-variant"
+          :number="performance"
+          suffix="%"
+          label="So với hôm qua"
+        />
       </tiles-block>
-
-      <card-component
-        title="Biểu đồ"
-        icon="finance"
-        header-icon="reload"
-        @header-icon-click="fillChartData"
-      >
-        <div
-          v-if="chartData"
-          class="chart-area"
-        >
-          <line-chart
-            :chart-data="chartData"
-            :chart-options="chartOptions"
-            :style="{height: '100%'}"
-          />
-        </div>
-      </card-component>
 
       <card-component
         title="Khách hàng"
@@ -91,7 +73,6 @@ import HeroBar from "@/components/HeroBar.vue";
 import TilesBlock from "@/components/TilesBlock.vue";
 import CardWidget from "@/components/CardWidget.vue";
 import CardComponent from "@/components/CardComponent.vue";
-import LineChart from "@/components/Charts/LineChart.vue";
 import ClientsTableSample from "@/components/ClientsTableSample.vue";
 import NotificationBar from "@/components/NotificationBar.vue";
 import axios from "axios";
@@ -100,7 +81,6 @@ export default defineComponent({
   name: "HomeView",
   components: {
     ClientsTableSample,
-    LineChart,
     CardComponent,
     CardWidget,
     TilesBlock,
@@ -113,28 +93,19 @@ export default defineComponent({
       titleStack: ["Admin", "Trang chủ"],
       instance: '',
       error: [],
-      chartData: null,
-      chartOptions: {
-        responsive: true,
-        maintainAspectRatio: true,
-        scales: {
-          y: {
-            display: false
-          },
-          x: {
-            display: true
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
-          }
-        }
-      }
+      newCustomer: '',
+      quantityOrder: '',
+      revenue: '',
+      performance: '',
     };
   },
+  watch: {
+    performance() {
+      console.log(this.performance);
+    }
+  },
   mounted () {
-      const baseDomain = "https://coffesystem-production.up.railway.app";
+      const baseDomain = "http://localhost:8080";
 
     const baseURL = `${baseDomain}`;
     this.instance = axios.create({
@@ -154,9 +125,19 @@ export default defineComponent({
         return Promise.reject(error);
       }
     );
+
+    this.storeId = localStorage.getItem("storeId");
     this.fillChartData();
     this.loadStore();
+    this.statisticNewCustomer(this.storeId, new Date());
+    this.statisticOrderByDate(this.storeId, new Date());
+    this.statisticPerformanceByDate(this.storeId, new Date());
 
+    this.$root.$on('reStatistic', (storeId, date) => {
+      this.statisticNewCustomer(storeId, date);
+      this.statisticOrderByDate(storeId, date);
+      this.statisticPerformanceByDate(storeId, date);
+    });
   },
   methods: {
     fillChartData () {
@@ -173,6 +154,46 @@ export default defineComponent({
           this.error.push(e);
         });
     },
+
+    statisticPerformanceByDate(storeId, date) {
+      let dayParam = this.convert(date);
+      this.instance.get("/admin/statistic-by-date/" + storeId + "/performance?date=" + dayParam)
+        .then((response) => {
+          this.performance = response.data.data;
+        })
+        .catch((e) => {
+          this.error.push(e);
+        });
+    },
+
+    statisticOrderByDate(storeId, date) {
+      let dayParam = this.convert(date);
+      this.instance.get("/admin/statistic-by-date/" + storeId + "/revenue?date=" + dayParam)
+        .then((response) => {
+          this.quantityOrder = response.data.data.quantityOrder;
+          this.revenue = response.data.data.revenue;
+        })
+        .catch((e) => {
+          this.error.push(e);
+        });
+    },
+
+    statisticNewCustomer(storeId, date) {
+      let dayParam = this.convert(date);
+      this.instance.get("/admin/statistic-by-date/" + storeId + "/new-customer?date=" + dayParam)
+        .then((response) => {
+          this.newCustomer = response.data.data;
+        })
+        .catch((e) => {
+          this.error.push(e);
+        });
+    },
+    convert(str) {
+       let date = new Date(str),
+        month = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), month, day].join("/");
+    }
   }
 });
 </script>

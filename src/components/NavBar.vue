@@ -111,7 +111,7 @@
         },
     },
     mounted() {
-      const baseDomain = "https://coffesystem-production.up.railway.app";
+      const baseDomain = "http://localhost:8080";
 
       const baseURL = `${baseDomain}`;
       this.instance = axios.create({
@@ -143,6 +143,7 @@
 
       reloadData() {
         this.$root.$emit('reload', this.selected.id)
+        this.$root.$emit('reStatistic', this.selected.id, new Date())
         this.$root.$emit('reloadEmForTable', this.selected.id)
         this.$root.$emit('reloadAttendance', this.selected.id)
       },
