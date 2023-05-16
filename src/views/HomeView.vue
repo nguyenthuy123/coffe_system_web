@@ -127,6 +127,7 @@ export default defineComponent({
     );
 
     this.storeId = localStorage.getItem("storeId");
+    this.employeeId = localStorage.getItem("employeeId");
     this.fillChartData();
     this.loadStore();
     this.statisticNewCustomer(this.storeId, new Date());
@@ -144,20 +145,33 @@ export default defineComponent({
       this.chartData = chartConfig.sampleChartData();
     },
     loadStore() {
-      this.instance.get("/store/list")
-        .then((response) => {
-          this.stores = response.data.data;
-          localStorage.setItem("stores", JSON.stringify(this.stores));
-          localStorage.setItem("storeId", JSON.stringify(this.stores[0].id));
-        })
-        .catch((e) => {
-          this.error.push(e);
-        });
+      if (localStorage.getItem("role") === 'ROLE_MANAGER') {
+        this.instance.get("/manager/store/" + this.employeeId)
+          .then((response) => {
+            this.stores = response.data.data;
+            localStorage.setItem("stores", JSON.stringify(this.stores));
+            localStorage.setItem("storeId", JSON.stringify(this.stores[0].id));
+          })
+          .catch((e) => {
+            this.error.push(e);
+          });
+      } else {
+        this.instance.get("/store/list")
+          .then((response) => {
+            this.stores = response.data.data;
+            localStorage.setItem("stores", JSON.stringify(this.stores));
+            localStorage.setItem("storeId", JSON.stringify(this.stores[0].id));
+          })
+          .catch((e) => {
+            this.error.push(e);
+          });
+      }
+
     },
 
     statisticPerformanceByDate(storeId, date) {
       let dayParam = this.convert(date);
-      this.instance.get("/admin/statistic-by-date/" + storeId + "/performance?date=" + dayParam)
+      this.instance.get("/statistic-by-date/" + storeId + "/performance?date=" + dayParam)
         .then((response) => {
           this.performance = response.data.data;
         })
@@ -168,7 +182,7 @@ export default defineComponent({
 
     statisticOrderByDate(storeId, date) {
       let dayParam = this.convert(date);
-      this.instance.get("/admin/statistic-by-date/" + storeId + "/revenue?date=" + dayParam)
+      this.instance.get("/statistic-by-date/" + storeId + "/revenue?date=" + dayParam)
         .then((response) => {
           this.quantityOrder = response.data.data.quantityOrder;
           this.revenue = response.data.data.revenue;
@@ -180,7 +194,7 @@ export default defineComponent({
 
     statisticNewCustomer(storeId, date) {
       let dayParam = this.convert(date);
-      this.instance.get("/admin/statistic-by-date/" + storeId + "/new-customer?date=" + dayParam)
+      this.instance.get("/statistic-by-date/" + storeId + "/new-customer?date=" + dayParam)
         .then((response) => {
           this.newCustomer = response.data.data;
         })

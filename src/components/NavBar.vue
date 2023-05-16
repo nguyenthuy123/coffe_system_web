@@ -133,6 +133,7 @@
       );
       this.name = localStorage.getItem("name");
       this.stores = JSON.parse(localStorage.getItem("stores"));
+      console.log(this.stores[0]);
       this.selected = this.stores[0]
       this.$router.afterEach(() => {
         this.isMenuActive = false;

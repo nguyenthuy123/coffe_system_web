@@ -145,7 +145,7 @@
     },
     methods: {
       loadAttendance(storeId) {
-        this.instance.get("admin/employee/" + storeId + "/attendance/list")
+        this.instance.get("/employee/" + storeId + "/attendance/list")
           .then((response) => {
             this.attendances = response.data.content;
           })

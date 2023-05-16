@@ -162,7 +162,7 @@
 
     methods: {
       loadEmployee(storeId) {
-        this.instance.get("/admin/employee/" + storeId + "/list")
+        this.instance.get("/employee/" + storeId + "/list")
           .then((response) => {
             this.employees = response.data.content;
           })

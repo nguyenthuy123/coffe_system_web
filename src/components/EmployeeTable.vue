@@ -327,7 +327,7 @@
 
     methods: {
       loadEmployee(storeId) {
-        this.instance.get("/admin/employee/" + storeId + "/list")
+        this.instance.get("/employee/" + storeId + "/list")
           .then((response) => {
             this.employees = response.data.content;
           })
@@ -348,7 +348,7 @@
       },
 
       loadShift(storeId) {
-        this.instance.get("admin/" + storeId + "/shift/list")
+        this.instance.get("/" + storeId + "/shift/list")
           .then((response) => {
             this.shifts = response.data;
             this.employee.shiftId = this.shifts[0].id;
@@ -360,7 +360,7 @@
 
       detail (storeId, id) {
         this.myModel = true;
-        this.instance.get("admin/employee/" + storeId + "/detail/" + id)
+        this.instance.get("/employee/" + storeId + "/detail/" + id)
           .then((response) => {
             this.employee = response.data.data;
             this.employee.dob = new Date(response.data.data.dob);
@@ -374,7 +374,7 @@
         if (this.checkForm() === true) {
           this.pause();
         } else {
-          this.instance.post("/admin/employee/save", this.employee)
+          this.instance.post("/employee/save", this.employee)
             .then((response) => {
               if (response.data.status.code === 1000) {
                 this.myModel = false;
@@ -407,7 +407,7 @@
       },
 
       confirmDelete(id) {
-        this.instance.delete("admin/employee/" + id)
+        this.instance.delete("/employee/" + id)
           .then((response) => {
             if (response.data.status.code === 1000) {
               this.loadEmployee(this.storeId);

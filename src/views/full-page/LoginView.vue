@@ -65,6 +65,7 @@
   const checkLogin = ref(false);
   const isLoading = ref(false);
   const token = ref("");
+  const role = ref("");
   const form = ref({
       username: "",
       password: ""
@@ -76,16 +77,26 @@
       axios.post("http://localhost:8080/auth/login", { username: form.value.username, password: form.value.password })
         .then((response) => {
           token.value = response.data.data.accessToken;
+          role.value = response.data.data.role;
+          console.log(role.value);
           if (response.data.status.code !== 1000) {
             console.log("Login fail !");
             checkLogin.value = true;
             isLoading.value = false;
-          }else {
+          }else if (role.value === 'ROLE_ADMIN' || 'ROLE_MANAGER'){
             localStorage.setItem("token", token.value);
             localStorage.setItem("username", response.data.data.username);
             localStorage.setItem("name", response.data.data.name);
+            localStorage.setItem("role", response.data.data.role);
+            localStorage.setItem("employeeId", response.data.data.employeeId);
             isLoading.value = false;
             router.push("/home");
+          } else {
+            this.$buefy.notification.open({
+              message: `Đăng nhập thất bại`,
+              type: "is-danger",
+              pauseOnHover: true,
+            });
           }
 
         });

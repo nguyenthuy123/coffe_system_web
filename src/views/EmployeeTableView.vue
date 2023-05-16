@@ -232,7 +232,7 @@
       },
 
       loadShift(storeId) {
-        this.instance.get("admin/" + storeId + "/shift/list")
+        this.instance.get("/" + storeId + "/shift/list")
           .then((response) => {
             this.shifts = response.data;
             this.employee.shiftId = this.shifts[0].id;
@@ -246,7 +246,7 @@
         if (this.checkForm() === true) {
           this.pause();
         } else {
-          this.instance.post("admin/employee/save", this.employee)
+          this.instance.post("employee/save", this.employee)
             .then((response) => {
               if (response.data.status.code === 1000) {
                 this.myModel = false;
