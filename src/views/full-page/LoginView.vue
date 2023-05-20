@@ -74,7 +74,7 @@
   const login = () => {
     isLoading.value = true;
     setTimeout(() => {
-      axios.post("http://localhost:8080/auth/login", { username: form.value.username, password: form.value.password })
+      axios.post("https://coffesystem-production.up.railway.app/auth/login", { username: form.value.username, password: form.value.password })
         .then((response) => {
           token.value = response.data.data.accessToken;
           role.value = response.data.data.role;

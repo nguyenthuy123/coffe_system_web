@@ -122,7 +122,7 @@
     },
     data() {
       return {
-        titleStack: ["Admin", "Khách hàng"],
+        titleStack: ["Coffee", "Khách hàng"],
         storeId: "",
         isActive: false,
         checkedRows: [],
@@ -147,7 +147,7 @@
       };
     },
     mounted() {
-      const baseDomain = "http://localhost:8080";
+      const baseDomain = "https://coffesystem-production.up.railway.app";
 
       const baseURL = `${baseDomain}`;
       this.instance = axios.create({

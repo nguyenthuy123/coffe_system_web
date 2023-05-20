@@ -27,7 +27,7 @@
           type="is-primary"
           icon="account-multiple"
           :number="newCustomer"
-          label="Khách hàng mới trong ngày"
+          label="Khách hàng mới"
         />
         <card-widget
           class="tile is-child"
@@ -35,7 +35,7 @@
           icon="cart-outline"
           :number="quantityOrder"
           suffix=""
-          label="Số order trong ngày"
+          label="Số order"
         />
         <card-widget
           class="tile is-child"
@@ -51,7 +51,7 @@
           icon="chart-timeline-variant"
           :number="performance"
           suffix="%"
-          label="So với hôm qua"
+          label="So với tháng trước"
         />
       </tiles-block>
 
@@ -105,7 +105,7 @@ export default defineComponent({
     }
   },
   mounted () {
-      const baseDomain = "http://localhost:8080";
+      const baseDomain = "https://coffesystem-production.up.railway.app";
 
     const baseURL = `${baseDomain}`;
     this.instance = axios.create({
